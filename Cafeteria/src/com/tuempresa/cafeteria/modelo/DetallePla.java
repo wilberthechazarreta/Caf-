@@ -26,7 +26,7 @@ int cantidad;
 		return new BigDecimal(cantidad).multiply(precioPorUnidad);
 	}
 	 
-	@DefaultValueCalculator(value = CalculadorPrecioporUnidad.class, 
+	@DefaultValueCalculator(value = CalculadorPrecioPorUnidadPlatillos.class, 
 			properties = @PropertyValue(name = "numero", from = "platillos.numero")
 	)
 	

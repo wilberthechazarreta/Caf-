@@ -14,6 +14,7 @@ import lombok.*;
 @Entity @Getter @Setter
 public class Pedido extends Identificable{
 	
+	
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
     @DescriptionsList
     Mesa mesa;
@@ -29,11 +30,19 @@ public class Pedido extends Identificable{
 	
 	
 	@ElementCollection
-	@ListProperties("platillos.nombre, cantidad, precioPorUnidad, importes")
+	@ListProperties("platillos.nombre, cantidad, precioPorUnidad," +
+			"importes+[" +
+			"pedido.porcentajeIVA," +
+			"pedido.iva," +
+			"pedido.importeTotal" +
+		 "]")
 	Collection<DetallePla>detallepla;
 	
 	@Digits(integer = 2, fraction = 0)
 	BigDecimal porcentajeIVA;
+	
+	@Digits(integer = 2, fraction = 0)
+	BigDecimal PorcentajeIVA;
 	
 	@ReadOnly
 	@Stereotype("DINERO")
@@ -55,4 +64,14 @@ public class Pedido extends Identificable{
 	@Stereotype("DINERO")
 	@Calculation("sum(detalles.importe)+iva")
 	BigDecimal importeTotal;
+	
+	@ReadOnly
+	@Stereotype("DINERO")
+	@Calculation("sum(detallepla.importes)*porcentajeIVA/100")
+	BigDecimal Iva;
+	
+	@ReadOnly
+	@Stereotype("DINERO")
+	@Calculation("sum(detallepla.importes)+Iva")
+	BigDecimal ImporteTotal;
 }
