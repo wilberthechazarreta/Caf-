@@ -21,7 +21,7 @@ int cantidad;
 	
 	@Money
 	@Depends("precioPorUnidad,cantidad")
-	public BigDecimal getImporte() {
+	public BigDecimal getImportes() {
 		if (precioPorUnidad==null) return BigDecimal.ZERO;
 		return new BigDecimal(cantidad).multiply(precioPorUnidad);
 	}

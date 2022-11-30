@@ -1,9 +1,11 @@
 package com.tuempresa.cafeteria.modelo;
  
 
+import java.math.*;
 import java.util.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import org.openxava.annotations.*;
 
@@ -17,12 +19,40 @@ public class Pedido extends Identificable{
     Mesa mesa;
 
 	@ElementCollection
-	@ListProperties("bebida.nombre, cantidad, precioPorUnidad, importe")
+	@ListProperties("bebida.nombre, cantidad, precioPorUnidad," +
+			"importe+[" +
+			"pedido.porcentajeIVA," +
+			"pedido.iva," +
+			"pedido.importeTotal" +
+		 "]")
 	Collection<Detalle>detalles;
 	
 	
 	@ElementCollection
-	@ListProperties("platillos.nombre, cantidad, precioPorUnidad, importe")
-	Collection<DetallePla>detalle;
+	@ListProperties("platillos.nombre, cantidad, precioPorUnidad, importes")
+	Collection<DetallePla>detallepla;
 	
+	@Digits(integer = 2, fraction = 0)
+	BigDecimal porcentajeIVA;
+	
+	@ReadOnly
+	@Stereotype("DINERO")
+	@Calculation("sum(detalles.importe)")
+	BigDecimal totalBebida;
+	
+	@ReadOnly
+	@Stereotype("DINERO")
+	@Calculation("sum(detallepla.importes)")
+	//@Calculation("sum(detallepla.importes)")
+	BigDecimal totalPlatillo;
+	
+	@ReadOnly
+	@Stereotype("DINERO")
+	@Calculation("sum(detalles.importe)*porcentajeIVA/100")
+	BigDecimal iva;
+	
+	@ReadOnly
+	@Stereotype("DINERO")
+	@Calculation("sum(detalles.importe)+iva")
+	BigDecimal importeTotal;
 }
