@@ -11,13 +11,13 @@ import com.tuempresa.cafeteria.calculadores.*;
 import lombok.*;
 
 @Embeddable @Getter @Setter
-public class Detalle {
-
-	int cantidad;
+public class DetallePla {
+	
+int cantidad;
+	
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
-	Bebidas bebida;
-	
+	Platillos platillos;
 	
 	@Money
 	@Depends("precioPorUnidad,cantidad")
@@ -27,9 +27,10 @@ public class Detalle {
 	}
 	 
 	@DefaultValueCalculator(value = CalculadorPrecioporUnidad.class, 
-			properties = @PropertyValue(name = "numero", from = "bebida.numero")
+			properties = @PropertyValue(name = "numero", from = "platillos.numero")
 	)
 	
 	@Money
 	BigDecimal precioPorUnidad;
+
 }

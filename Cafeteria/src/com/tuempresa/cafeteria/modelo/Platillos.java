@@ -5,6 +5,9 @@ import java.math.*;
 import javax.persistence.*;
 
 import org.openxava.annotations.*;
+import org.openxava.calculators.*;
+
+import com.tuempresa.cafeteria.calculadores.*;
 
 import lombok.*;
 
@@ -12,7 +15,16 @@ import lombok.*;
 @Entity @Getter @Setter
 public class Platillos extends Identificable{
 	
+	@Hidden
+	@DefaultValueCalculator(value = CalculadorNumPlatillo.class,
+    properties = @PropertyValue(name = "anyo"))
+	@Column(length = 6)
 	int numero;
+	
+	@Hidden
+	@DefaultValueCalculator(CurrentYearCalculator.class)
+	@Column(length = 4)
+	int anyo;
 	
 	@Column
 	String nombre;

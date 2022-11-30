@@ -17,7 +17,12 @@ public class Pedido extends Identificable{
     Mesa mesa;
 
 	@ElementCollection
-	@ListProperties("bebida.numero, bebida.nombre, cantidad, precioPorUnidad, importe")
+	@ListProperties("bebida.nombre, cantidad, precioPorUnidad, importe")
 	Collection<Detalle>detalles;
+	
+	
+	@ElementCollection
+	@ListProperties("platillos.nombre, cantidad, precioPorUnidad, importe")
+	Collection<DetallePla>detalle;
 	
 }
